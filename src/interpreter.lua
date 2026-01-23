@@ -21,6 +21,10 @@ function M.eval_expr(expr, env)
         if op == "==" then return a == b end
 
         error("Unknown operator: " .. op)
+
+    elseif expr.type == "string" then
+        return expr.value
+
     end
 end
 
@@ -40,6 +44,14 @@ function M.exec(nodes, env)
             while M.eval_expr(node.cond, env) do
                 M.exec(node.body, env)
             end
+
+        elseif node.type == "if" then
+            if M.eval_expr(node.cond, env) then
+                M.exec(node.then_body, env)
+            elseif node.else_body then
+                M.exec(node.else_body, env)
+            end
+
         end
     end
 end

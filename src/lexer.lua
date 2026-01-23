@@ -5,9 +5,11 @@ function M.tokenize(code)
     local i = 1
 
     local patterns = {
+        {"string", '^"[^"]*"'},
         {"number", "^%d+"},
         {"id", "^[%a_][%w_]*"},
-        {"op", "^[%+%-%*/%=<>!]"},
+        {"op", "^[=!<>]="},
+        {"op", "^[%+%-%*/=<>]"},
         {"lparen", "^%("},
         {"rparen", "^%)"},
         {"lbrace", "^{"},

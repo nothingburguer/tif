@@ -58,6 +58,30 @@ function Parser:statement()
         self:expect("rbrace")
         return {type="while", cond=cond, body=body}
 
+    elseif tok.value == "if" then
+        self:advance()
+        local cond = self:expression()
+        self:expect("lbrace")
+
+        local then_body = {}
+        while self:current().type ~= "rbrace" do
+            table.insert(then_body, self:statement())
+        end
+        self:expect("rbrace")
+
+        local else_body = nil
+        if self:current() and self:current().value == "else" then
+            self:advance()
+            self:expect("lbrace")
+            else_body = {}
+            while self:current().type ~= "rbrace" do
+                table.insert(else_body, self:statement())
+            end
+            self:expect("rbrace")
+        end
+
+        return {type="if", cond=cond, then_body=then_body, else_body=else_body}
+
     else
         local name = self:expect("id").value
         self:expect("op")
@@ -95,6 +119,11 @@ function Parser:term()
         local expr = self:expression()
         self:expect("rparen")
         return expr
+
+    elseif tok.type == "string" then
+        self:advance()
+        return {type="string", value=tok.value:sub(2, -2)}
+
     end
 
     error("Unexpected token")
