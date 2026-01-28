@@ -25,6 +25,7 @@ The language is built around a classic interpreter architecture:
 - Simple and readable syntax
 - AST-based execution model
 - `if/else` statements
+- Functions
 
 ## Example
 
