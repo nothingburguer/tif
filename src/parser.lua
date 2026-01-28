@@ -33,6 +33,45 @@ end
 function Parser:statement()
     local tok = self:current()
 
+	if tok.value == "fn" then
+		self:advance()
+
+		local return_type = self:expect("id").value
+		self:expect("colon")
+		local name = self:expect("id").value
+
+		self:expect("lparen")
+
+		local params = {}
+		if self:current().type ~= "rparen" then
+			repeat
+				table.insert(params, self:expect("id").value)
+				if self:current().type == "comma" then
+					self:advance()
+				else
+					break
+				end
+			until false
+		end
+
+		self:expect("rparen")
+		self:expect("lbrace")
+
+		local body = {}
+		while self:current().type ~= "rbrace" do
+			table.insert(body, self:statement())
+		end
+		self:expect("rbrace")
+
+		return {
+			type = "funcdef",
+			name = name,
+			params = params,
+			body = body,
+			ret_type = return_type
+		}
+	end
+
     if tok.value == "let" then
         self:advance()
         local name = self:expect("id").value
@@ -82,6 +121,11 @@ function Parser:statement()
 
         return {type="if", cond=cond, then_body=then_body, else_body=else_body}
 
+	elseif tok.value == "return" then
+		self:advance()
+		local expr = self:expression()
+		return { type="return", expr=expr }
+
     else
         local name = self:expect("id").value
         self:expect("op")
@@ -109,11 +153,32 @@ function Parser:term()
     if tok.type == "number" then
         self:advance()
         return {type="number", value=tonumber(tok.value)}
-
-    elseif tok.type == "id" then
-        self:advance()
-        return {type="varref", name=tok.value}
-
+     
+	elseif tok.type == "id" then
+        local name = tok.value
+	   	self:advance()
+        
+        if self:current() and self:current().type == "lparen" then
+            self:advance()
+            local args = {}
+            
+            if self:current().type ~= "rparen" then
+                repeat
+	                table.insert(args, self:expression())
+                    if self:current().type == "comma" then
+	                    self:advance()
+                    else
+                        break
+                    end
+                until false
+            end
+         
+            self:expect("rparen")
+            return { type="funccall", name=name, args=args }
+        end
+        
+	    return {type="varref", name=name}
+        
     elseif tok.type == "lparen" then
         self:advance()
         local expr = self:expression()

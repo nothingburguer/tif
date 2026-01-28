@@ -16,6 +16,7 @@ function M.tokenize(code)
         {"rbrace", "^}"},
         {"comma", "^,"},
         {"space", "^%s+"},
+		{"colon", "^:"},
     }
 
     while i <= #code do

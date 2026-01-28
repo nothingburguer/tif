@@ -1,0 +1,6 @@
+fn int:sum(a, b) {
+	return a + b
+}
+
+let r = sum(6, 7)
+print(r) 
