@@ -26,13 +26,32 @@ The language is built around a classic interpreter architecture:
 - AST-based execution model
 - `if/else` statements
 - Functions
+- Optional typed declaration
 
-## Example
+## Examples
+<br>
 
-```tifx
+**Example 1:**
+
+```rust
 let x = 3
 
 while x > 0 {
     print(x)
     x = x - 1
 }
+```
+<br>
+
+**Example 2:**
+
+```rust
+fn int:sum(a, b) {
+    return a + b
+}
+
+let int:x = 10
+x = sum(x, 5)
+
+print(x)
+```
