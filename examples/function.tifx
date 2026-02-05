@@ -1,6 +1,8 @@
 fn int:sum(a, b) {
-	return a + b
+    return a + b
 }
 
-let r = sum(6, 7)
-print(r) 
+let int:x = 10
+x = sum(x, 5)
+
+print(x)

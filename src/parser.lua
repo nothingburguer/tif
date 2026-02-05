@@ -74,10 +74,32 @@ function Parser:statement()
 
     if tok.value == "let" then
         self:advance()
-        local name = self:expect("id").value
-        self:expect("op")
+
+        local var_type = nil
+        local name = nil
+
+        local first = self:expect("id").value
+
+        if self:current().type == "colon" then
+            -- typed variable: let int:x = ...
+            var_type = first
+            self:advance() -- skip :
+            name = self:expect("id").value
+        else
+            -- untyped variable: let x = ...
+            name = first
+        end
+
+        self:expect("op") -- =
+
         local expr = self:expression()
-        return {type="var", name=name, expr=expr}
+
+        return {
+            type = "var",
+            name = name,
+            var_type = var_type,
+            expr = expr
+        }
 
     elseif tok.value == "print" then
         self:advance()

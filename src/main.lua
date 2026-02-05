@@ -23,9 +23,8 @@ end
 if not arg[1] then
     print("tif interpreter")
     print("Usage:")
-    print("  tif file.tifx")
-    os.exit(1)
+	print("  tif file.tifx")
+	os.exit(1)
 end
 
 run_file(arg[1])
-
