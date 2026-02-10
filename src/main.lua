@@ -21,10 +21,19 @@ local function run_file(path)
 end
 
 if not arg[1] then
-    print("tif interpreter")
-    print("Usage:")
-	print("  tif file.tifx")
-	os.exit(1)
+    print([[
+tif — the minimal interpreted programming language
+
+Usage:
+    tif <file.tlf>
+
+File extension:
+    .tlf (Tif Language File)
+
+Copyright:
+    MIT License, Copyright (c) 2026 nothingburguer
+]])
+    os.exit(1)
 end
 
 run_file(arg[1])

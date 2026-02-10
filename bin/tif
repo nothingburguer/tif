@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-DIR="/usr/local/tif"
-lua "$DIR/src/main.lua" "$@"
-
