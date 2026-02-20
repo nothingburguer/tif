@@ -31,7 +31,7 @@ File extension:
     .tlf (Tif Language File)
 
 Copyright:
-    MIT License, Copyright (c) 2026 nothingburguer
+    MIT License, Copyright (c) 2026 grassleaff
 ]])
     os.exit(1)
 end
